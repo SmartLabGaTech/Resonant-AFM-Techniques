@@ -1,5 +1,6 @@
 ## Written by Micah Terrell
-## Protocol Version 0.1
+## Updated for Protocol Version 0.1
+## This file defines constants used for protocol messages
 
 ## Protocol OpCodes
 CONNECT_OPCODE 							= 0x0001
