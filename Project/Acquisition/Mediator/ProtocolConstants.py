@@ -1,3 +1,6 @@
+## Written by Micah Terrell
+## Protocol Version 0.1
+
 ## Protocol OpCodes
 CONNECT_OPCODE 							= 0x0001
 CONNECT_ACK_OPCODE 						= 0x0002
