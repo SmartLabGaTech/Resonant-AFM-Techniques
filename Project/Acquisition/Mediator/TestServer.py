@@ -1,4 +1,5 @@
 import socket
+import codecs
 
 host = ''        # Symbolic name meaning all available interfaces
 port = 12345     # Arbitrary non-privileged port
@@ -16,8 +17,8 @@ while True:
 
         if not data: break
 
-        print ("Client Says: "+data)
-        conn.sendall("Server Says:hi")
+        print ("Client Says: "+ codecs.decode(data, "utf_8"))
+        
 
     except socket.error:
         print ("Error Occured.")
