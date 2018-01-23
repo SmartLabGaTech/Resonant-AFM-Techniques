@@ -27,16 +27,7 @@ def sendTCPMessage(message, host, port):
 
 	sock.close()
 
-# def sendTestTCP():
-# 	host = socket.gethostname()
-# 	port = 12345
-
-# 	s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-# 	s.connect((host, port))
-# 	s.sendall(b'Hello, world')
-# 	data = s.recv(1024)
-# 	s.close()
-# 	print("GOT ", repr(data))
+	return True
 
 #   Builds a BE TCP Control Protocol connect message
 # Parameters
@@ -93,4 +84,4 @@ def buildStopExperimentMessage():
 # print(buildSetParamMessage("TestParam", 42))
 # print(buildStartExperimentMessage())
 # print(buildStopExperimentMessage())
-sendTCPMessage(buildConnectMessage(), socket.gethostname(), 12345)
+# sendTCPMessage(buildConnectMessage(), socket.gethostname(), 12345)
