@@ -1,19 +1,22 @@
+import ProtocolClient
+import ProtocolServer
 import threading
 import socket
+import sys
 
-def sendTestTCP():
-	host = socket.gethostname()
-	port = 12345
-
-	s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-	s.connect((host, port))
-	s.sendall(b'Hello, world')
-	data = s.recv(1024)
-	s.close()
-	print("GOT ", repr(data))
 
 def main():
-	print("TODO: Implement main")
-	sendTestTCP()
+	ProtocolClient.sendTCPMessage("Hello", socket.gethostname() , 12345)
+	ProtocolClient.sendTCPMessage("Bye", socket.gethostname() , 12345)
+	ProtocolClient.sendTCPMessage("Hello", socket.gethostname() , 12345)
+	ProtocolClient.sendTCPMessage("Bye", socket.gethostname() , 12345)
+	ProtocolClient.sendTCPMessage("Hello", socket.gethostname() , 12345)
+	ProtocolClient.sendTCPMessage("Bye", socket.gethostname() , 12345)
+	ProtocolClient.sendTCPMessage("Hello", socket.gethostname() , 12345)
+	ProtocolClient.sendTCPMessage("Bye", socket.gethostname() , 12345)
+	ProtocolClient.sendTCPMessage("Hello", socket.gethostname() , 12345)
+	ProtocolClient.sendTCPMessage("Bye", socket.gethostname() , 12345)
+	ProtocolClient.sendTCPMessage("Hello", socket.gethostname() , 12345)
+	ProtocolClient.sendTCPMessage("Bye", socket.gethostname() , 12345)
 
 main()
