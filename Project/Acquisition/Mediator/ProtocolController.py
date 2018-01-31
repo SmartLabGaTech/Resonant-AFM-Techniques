@@ -8,14 +8,17 @@ import queue
 import threading
 import ProtocolServer
 import ProtocolClient
+import socket
 
 messageQueue = queue.Queue(20)
 
 ###### Public Functions ######
 
-def connectToLabView():
-	##TODO
-
+def connectToLabView(port):
+	print("Connecting on port " + str(port))
+	connectMessage = buildConnectMessage()
+	ProtocolClient.sendTCPMessage(connectMessage, socket.gethostname(), port)
+	##TODO Handle handshakes
 ##TODO Implement state machine
 
 
@@ -85,7 +88,7 @@ def buildStopExperimentMessage():
 
 
 #### Test Script
-listen(12345)
+#listen(12345)
 # print(buildConnectMessage())
 # print(buildSetParamMessage("TestParam", 42))
 # print(buildStartExperimentMessage())
