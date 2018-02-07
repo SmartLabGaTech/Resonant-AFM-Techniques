@@ -1,27 +1,44 @@
 import socket
 import codecs
+import json
 
 host = ''        # Symbolic name meaning all available interfaces
-port = 12345     # Arbitrary non-privileged port
+sendPort = 4021     # Arbitrary non-privileged port
+receivePort = 4020
 s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-s.bind((host, port))
+s.bind((host, receivePort))
 
-print (host , port)
+print (host , receivePort)
 s.listen(1)
-conn, addr = s.accept()
-print('Connected by', addr)
+connected = False
+
 while True:
+    conn, addr = s.accept()
+    print('Connected by', addr)
+    data = conn.recv(1024)
 
-    try:
-        data = conn.recv(1024)
+    if not data:
+        pass
 
-        if not data: break
+    if(data):
+        if(not connected):
+            sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+            sock.connect(('127.0.0.1', sendPort))
+
+            message = {
+                "message_name" : "connectAck"
+            }
+            encodedMessage = json.dumps(message).encode("utf_8")
+            sock.sendall(encodedMessage)
+            print("sent ack")
+
+            connected = True
+
 
         print ("Client Says: "+ codecs.decode(data, "utf_8"))
+        sock.close()
         
 
-    except socket.error:
-        print ("Error Occured.")
-        break
+
 
 conn.close()
