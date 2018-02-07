@@ -41,6 +41,8 @@ def updateParametersButtonHandler(args):
 
 guiString = """
 <ConnectScreen>:
+	receivePort: receivePort
+	sendPort: sendPort
 	BoxLayout:
 		orientation: 'vertical'
 		Label:
@@ -50,16 +52,19 @@ guiString = """
 			Label:
 				text: 'Send Port'
 			TextInput:
+				id: sendPort
 				text: '4020'
 		BoxLayout:
 			orientation: 'horizontal'
 			Label:
-				text: 'Recieve Port'
+				text: 'Receive Port'
 			TextInput:
+				id: receivePort
 				text: '4021'
 		Button
 			text: 'Connect'
 			on_press:
+				root.connect(sendPort, receivePort)
 				root.manager.transition.direction = 'left'
 				root.manager.current = 'parameterScreen'
 <ParameterScreen>:
@@ -124,13 +129,19 @@ guiString = """
 				id: numberOfAcquisitions
 		Button:
 			text: 'Update Parameters'
-			on_press: root.updateParams([chirpAmplitude, inputVoltage, upperFrequency, lowerFrequency, sampleRate, chirpDuration, chirpWindowing, signalType, numberOfAcquisitions])
+			on_press: root.updateParams()
 """
 
 Builder.load_string(guiString)
 
 class ConnectScreen(Screen):
-	pass
+	receivePort = ObjectProperty(None)
+	sendPort = ObjectProperty(None)
+
+	def connect(self, sendPort, receivePort):
+		if(ProtocolController.runProtocol(int(sendPort.text), int(receivePort.text))):
+			return
+
 
 class ParameterScreen(Screen):
 
@@ -145,16 +156,37 @@ class ParameterScreen(Screen):
 	numberOfAcquisitions = ObjectProperty(None)
 
 
-	def updateParams(self, textFields):
-		for field in textFields:
-			field.text = ''
+	def updateParams(self):
+		if(len(self.chirpAmplitude.text) > 0):
+			ProtocolController.sendSetParamMessage("chirpAmplitude", self.chirpAmplitude.text)
 
+		if(len(self.inputVoltage.text) > 0):
+			ProtocolController.sendSetParamMessage("inputVoltage", self.inputVoltage.text)
 
+		if(len(self.upperFrequency.text) > 0):
+			ProtocolController.sendSetParamMessage("upperFrequency", self.upperFrequency.text)
+
+		if(len(self.lowerFrequency.text) > 0):
+			ProtocolController.sendSetParamMessage("lowerFrequency", self.lowerFrequency.text)
+
+		if(len(self.sampleRate.text) > 0):
+			ProtocolController.sendSetParamMessage("sampleRate", self.sampleRate.text)
+
+		if(len(self.chirpDuration.text) > 0):
+			ProtocolController.sendSetParamMessage("chirpDuration", self.chirpDuration.text)
+
+		if(len(self.chirpWindowing.text) > 0):
+			ProtocolController.sendSetParamMessage("chirpWindowing", self.chirpWindowing.text)
+
+		if(len(self.signalType.text) > 0):
+			ProtocolController.sendSetParamMessage("signalType", self.signalType.text)
+
+		if(len(self.numberOfAcquisitions.text) > 0):
+			ProtocolController.sendSetParamMessage("numberOfAcquisitions", self.numberOfAcquisitions.text)
 
 sm = ScreenManager()
 sm.add_widget(ConnectScreen(name='connectScreen'))
 sm.add_widget(ParameterScreen(name='parameterScreen'))
-
 
 	
 class MediatorApp(App):
