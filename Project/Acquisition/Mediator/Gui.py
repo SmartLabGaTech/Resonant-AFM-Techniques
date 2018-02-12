@@ -77,6 +77,7 @@ guiString = """
 	chirpWindowing: chirpWindowing
 	signalType: signalType
 	numberOfAcquisitions: numberOfAcquisitions
+	waveformSpecificationFile: waveformSpecificationFile
 
 	BoxLayout:
 		orientation: 'vertical'
@@ -127,9 +128,17 @@ guiString = """
 				text: 'Number of Acquisitions'
 			TextInput:
 				id: numberOfAcquisitions
+		BoxLayout:
+			Label:
+				text: 'Waveform Specification File'
+			TextInput:
+				id: waveformSpecificationFile
 		Button:
 			text: 'Update Parameters'
 			on_press: root.updateParams()
+		Button:
+			text: 'Start Experiment'
+			on_press: root.startExperiment()
 """
 
 Builder.load_string(guiString)
@@ -154,7 +163,7 @@ class ParameterScreen(Screen):
 	chirpWindowing = ObjectProperty(None)
 	signalType = ObjectProperty(None)
 	numberOfAcquisitions = ObjectProperty(None)
-
+	waveformSpecificationFile = ObjectProperty(None)
 
 	def updateParams(self):
 		if(len(self.chirpAmplitude.text) > 0):
@@ -184,6 +193,9 @@ class ParameterScreen(Screen):
 		if(len(self.numberOfAcquisitions.text) > 0):
 			ProtocolController.sendSetParamMessage("numberOfAcquisitions", self.numberOfAcquisitions.text)
 
+	def startExperiment(self):
+		ProtocolController.sendStartExperimentMessage()
+		
 sm = ScreenManager()
 sm.add_widget(ConnectScreen(name='connectScreen'))
 sm.add_widget(ParameterScreen(name='parameterScreen'))
