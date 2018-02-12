@@ -41,8 +41,8 @@ def runProtocol(sendPort, receivePort):
 
 	if(not connected()):
 		print("Connection not found. Exiting Protocol.")
-		# TODO: Clean up threads
 		return False
+	
 	global sendPortNumber
 	global receivePortNumber
 
@@ -150,40 +150,7 @@ def sendThreadFunction(host, port):
 			# Sleep for a bit
 			time.sleep(.1)
 
-
-
-
-
-
-
-
-
-def connectToLabView(port):
-	print("Connecting on port " + str(port))
-	connectMessage = buildConnectMessage()
-	ProtocolClient.sendTCPMessage(connectMessage, socket.gethostname(), port)
-	##TODO Handle handshakes
-##TODO Implement state machine
-
-
-##TODO: document
-def listen(port):
-	threadTargetArgs = (port, decodeAndQueueMessage)
-	listenThread = threading.Thread(target=ProtocolServer.listenOnPort, args=threadTargetArgs)
-	listenThread.start()
-
 ###### Private Functions ######
-
-##TODO: Document
-
-
-
-
-
-
-
-
-
 
 #   Builds a BE TCP Control Protocol connect message
 # Parameters
@@ -237,12 +204,3 @@ def buildDisconnectMessage():
 		"message_name" : "disconnect"
 	}
 	return json.dumps(message)
-
-
-#### Test Script
-#listen(12345)
-# print(buildConnectMessage())
-# print(buildSetParamMessage("TestParam", 42))
-# print(buildStartExperimentMessage())
-# print(buildStopExperimentMessage())
-# sendTCPMessage(buildConnectMessage(), socket.gethostname(), 12345)
