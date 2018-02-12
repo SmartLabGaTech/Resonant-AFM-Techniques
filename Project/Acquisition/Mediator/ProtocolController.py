@@ -19,6 +19,9 @@ sendBuffer = queue.Queue(20)
 receiveBuffer = queue.Queue(20)
 timeout = 5
 
+sendPortNumber = None
+receivePortNumber = None
+
 ###### Public Functions ######
 
 def runProtocol(sendPort, receivePort):
@@ -28,7 +31,7 @@ def runProtocol(sendPort, receivePort):
 	listenThread.daemon = True
 	listenThread.start()
 
-	sendThreadArgs = ('127.0.0.1',sendPort)
+	sendThreadArgs = ('127.0.0.1', sendPort)
 	sendThread = threading.Thread(target=sendThreadFunction, args=sendThreadArgs)
 	sendThread.daemon = True
 	sendThread.start()
@@ -40,7 +43,13 @@ def runProtocol(sendPort, receivePort):
 	if(not connected()):
 		print("Connection not found. Exiting Protocol.")
 		# TODO: Clean up threads
-		return
+		return False
+	global sendPortNumber
+	global receivePortNumber
+
+	sendPortNumber = sendPort
+	receivePortNumber = receivePort
+	
 
 	print("Connected")
 	return True
@@ -74,6 +83,26 @@ def sendConnectMessage():
 def sendSetParamMessage(parameterName, parameterValue):
 	sendBuffer.put(buildSetParamMessage(parameterName, parameterValue))
 
+def sendStartExperimentMessage():
+	sendBuffer.put(buildStartExperimentMessage())
+
+def sendDisconnectMessage():
+	#Send the kill message directly
+
+	global sendPortNumber
+
+	# Create the socket
+	sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+	# If there is a message, encode and sent it
+	sock.connect(('127.0.0.1', sendPortNumber))
+
+	message = buildDisconnectMessage()
+
+	encodedMessage = message.encode("utf_8")
+	sock.sendall(encodedMessage)
+
+	sock.close()
+
 def listenThreadFunction(port):
 	host = ''
 
@@ -103,9 +132,6 @@ def listenThreadFunction(port):
 				receiveBuffer.put(decodedMessage, False)		
 
 def sendThreadFunction(host, port):
-
-	
-
 	while(1):
 		#Wait for messages in sendBuffer
 		if(not sendBuffer.empty()):
@@ -207,7 +233,11 @@ def buildStopExperimentMessage():
 	}
 	return json.dumps(message)
 
-
+def buildDisconnectMessage():
+	message = {
+		"message_name" : "disconnect"
+	}
+	return json.dumps(message)
 
 
 #### Test Script

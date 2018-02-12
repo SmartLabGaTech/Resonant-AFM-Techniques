@@ -7,6 +7,16 @@ from kivy.uix.label import Label
 from kivy.uix.button import Button
 from kivy.uix.textinput import TextInput
 from kivy.properties import ObjectProperty, StringProperty
+from kivy.uix.popup import Popup
+import signal
+import sys
+
+def signal_handler(signal, frame):
+        print("Got termination signal, attempting to exit cleanly")
+        ProtocolController.cleanupConnection()
+        sys.exit(0)
+signal.signal(signal.SIGINT, signal_handler)
+
 
 ## Can import from kivy file
 
@@ -148,8 +158,14 @@ class ConnectScreen(Screen):
 	sendPort = ObjectProperty(None)
 
 	def connect(self, sendPort, receivePort):
+		popup = Popup(content=Label(text='Connecting...'), auto_dismiss=False)
+		popup.open()
+
 		if(ProtocolController.runProtocol(int(sendPort.text), int(receivePort.text))):
+			popup.dismiss()
 			return
+		else:
+			popup.dismiss()
 
 
 class ParameterScreen(Screen):
@@ -195,7 +211,7 @@ class ParameterScreen(Screen):
 
 	def startExperiment(self):
 		ProtocolController.sendStartExperimentMessage()
-		
+
 sm = ScreenManager()
 sm.add_widget(ConnectScreen(name='connectScreen'))
 sm.add_widget(ParameterScreen(name='parameterScreen'))
@@ -236,6 +252,10 @@ class MediatorApp(App):
 		# rootLayout.add_widget(connectButton)
 
 		return sm
+
+	def on_stop(self):
+		ProtocolController.sendDisconnectMessage()
+
 
 if __name__ == '__main__':
     MediatorApp().run()
