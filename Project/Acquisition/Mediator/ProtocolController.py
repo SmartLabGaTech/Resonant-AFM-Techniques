@@ -17,7 +17,7 @@ messageQueue = queue.Queue(20)
 #Note: Each buffer should always contain plain text
 sendBuffer = queue.Queue(20)
 receiveBuffer = queue.Queue(20)
-timeout = 5
+timeout = 1
 
 sendPortNumber = None
 receivePortNumber = None

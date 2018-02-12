@@ -149,6 +149,11 @@ guiString = """
 		Button:
 			text: 'Start Experiment'
 			on_press: root.startExperiment()
+		Button:
+			text: 'Back To Connection'
+			on_press:
+				root.manager.transition.direction = 'right'
+				root.manager.current = 'connectScreen'
 """
 
 Builder.load_string(guiString)
@@ -208,6 +213,9 @@ class ParameterScreen(Screen):
 
 		if(len(self.numberOfAcquisitions.text) > 0):
 			ProtocolController.sendSetParamMessage("numberOfAcquisitions", self.numberOfAcquisitions.text)
+
+		if(len(self.waveformSpecificationFile.text) > 0):
+			ProtocolController.sendSetParamMessage("waveformSpecificationFile", self.waveformSpecificationFile.text)
 
 	def startExperiment(self):
 		ProtocolController.sendStartExperimentMessage()
