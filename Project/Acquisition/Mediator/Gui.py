@@ -10,152 +10,26 @@ from kivy.properties import ObjectProperty, StringProperty
 from kivy.uix.popup import Popup
 import signal
 import sys
+import ProtocolController
+import GuiViews
+kivy.require('1.10.0')
 
+#Define the signal so a control-c cleans up the connection
 def signal_handler(signal, frame):
         print("Got termination signal, attempting to exit cleanly")
-        ProtocolController.cleanupConnection()
+        try:
+        	ProtocolController.sendDisconnectMessage()
+        except:
+        	pass
         sys.exit(0)
 signal.signal(signal.SIGINT, signal_handler)
 
-
-## Can import from kivy file
-
-kivy.require('1.10.0')
-
-import ProtocolController
+#Constants
 sendPort = 4020
 recievePort = 4021
 
-#Handlers
-def sendPortInputHandler(instance, value):
-	try:
-		global sendPort
-		sendPort = int(value)
-	except:
-		pass
-def recievePortInputHandler(instance, value):
-	try:
-		global recievePort
-		recievePort = int(value)
-	except:
-		pass
-
-def connectButtonHandler(instance):
-	ProtocolController.listen(recievePort)
-	ProtocolController.connectToLabView(sendPort)
-
-
-def updateParametersButtonHandler(args):
-	print(args)
-
-
-guiString = """
-<ConnectScreen>:
-	receivePort: receivePort
-	sendPort: sendPort
-	BoxLayout:
-		orientation: 'vertical'
-		Label:
-			text: 'Band Excitation Mediator V0.2'
-		BoxLayout:
-			orientation: 'horizontal'
-			Label:
-				text: 'Send Port'
-			TextInput:
-				id: sendPort
-				text: '4020'
-		BoxLayout:
-			orientation: 'horizontal'
-			Label:
-				text: 'Receive Port'
-			TextInput:
-				id: receivePort
-				text: '4021'
-		Button
-			text: 'Connect'
-			on_press:
-				root.connect(sendPort, receivePort)
-				root.manager.transition.direction = 'left'
-				root.manager.current = 'parameterScreen'
-<ParameterScreen>:
-	chirpAmplitude: chirpAmplitude
-	inputVoltage: inputVoltage
-	upperFrequency: upperFrequency
-	lowerFrequency: lowerFrequency
-	sampleRate: sampleRate
-	chirpDuration: chirpDuration
-	chirpWindowing: chirpWindowing
-	signalType: signalType
-	numberOfAcquisitions: numberOfAcquisitions
-	waveformSpecificationFile: waveformSpecificationFile
-
-	BoxLayout:
-		orientation: 'vertical'
-		Label:
-			text: 'Parameters'
-		BoxLayout:
-			Label:
-				text: 'Chirp Amplitude'
-			TextInput:
-				id: chirpAmplitude
-		BoxLayout:
-			Label:
-				text: 'Input Voltage'
-			TextInput:
-				id: inputVoltage
-		BoxLayout:
-			Label:
-				text: 'Upper Frequency'
-			TextInput:
-				id: upperFrequency
-		BoxLayout:
-			Label:
-				text: 'Lower Frequency'
-			TextInput:
-				id: lowerFrequency
-		BoxLayout:
-			Label:
-				text: 'Sample Rate'
-			TextInput:
-				id: sampleRate
-		BoxLayout:
-			Label:
-				text: 'Chirp Duration'
-			TextInput:
-				id: chirpDuration
-		BoxLayout:
-			Label:
-				text: 'Chirp Windowing'
-			TextInput:
-				id: chirpWindowing
-		BoxLayout:
-			Label:
-				text: 'Signal Type'
-			TextInput:
-				id: signalType
-		BoxLayout:
-			Label:
-				text: 'Number of Acquisitions'
-			TextInput:
-				id: numberOfAcquisitions
-		BoxLayout:
-			Label:
-				text: 'Waveform Specification File'
-			TextInput:
-				id: waveformSpecificationFile
-		Button:
-			text: 'Update Parameters'
-			on_press: root.updateParams()
-		Button:
-			text: 'Start Experiment'
-			on_press: root.startExperiment()
-		Button:
-			text: 'Back To Connection'
-			on_press:
-				root.manager.transition.direction = 'right'
-				root.manager.current = 'connectScreen'
-"""
-
+#Import and use kivy definition string
+guiString = GuiViews.getGuiString()
 Builder.load_string(guiString)
 
 class ConnectScreen(Screen):
@@ -171,7 +45,6 @@ class ConnectScreen(Screen):
 			return
 		else:
 			popup.dismiss()
-
 
 class ParameterScreen(Screen):
 
@@ -220,50 +93,18 @@ class ParameterScreen(Screen):
 	def startExperiment(self):
 		ProtocolController.sendStartExperimentMessage()
 
+#Define the screens
 sm = ScreenManager()
 sm.add_widget(ConnectScreen(name='connectScreen'))
 sm.add_widget(ParameterScreen(name='parameterScreen'))
 
-	
 class MediatorApp(App):
 
 	def build(self):
-
-		# # GUI setup
-		# rootLayout = BoxLayout(orientation='vertical')
-
-		# titleText = Label(text='Band Excitation Mediator V0.2')
-		# rootLayout.add_widget(titleText)
-
-		# sendLayout = BoxLayout(orientation='horizontal')
-		# rootLayout.add_widget(sendLayout)
-
-		# sendPortInputLabel = Label(text="Send Port")
-		# sendLayout.add_widget(sendPortInputLabel)
-
-		# sendPortInput = TextInput(text='4020')
-		# sendPortInput.bind(text=sendPortInputHandler)
-		# sendLayout.add_widget(sendPortInput)
-
-		# recieveLayout = BoxLayout(orientation='horizontal')
-		# rootLayout.add_widget(recieveLayout)
-
-		# recievePortInputLabel = Label(text="Recieve Port")
-		# recieveLayout.add_widget(recievePortInputLabel)
-
-		# recievePortInput = TextInput(text='4021')
-		# recievePortInput.bind(text=recievePortInputHandler)
-		# recieveLayout.add_widget(recievePortInput)
-		
-		# connectButton = Button(text='Connect')
-		# connectButton.bind(on_press=connectButtonHandler)
-		# rootLayout.add_widget(connectButton)
-
 		return sm
 
 	def on_stop(self):
 		ProtocolController.sendDisconnectMessage()
-
 
 if __name__ == '__main__':
     MediatorApp().run()

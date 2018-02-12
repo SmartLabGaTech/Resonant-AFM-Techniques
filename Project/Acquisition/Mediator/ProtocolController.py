@@ -13,7 +13,6 @@ import time
 
 messageQueue = queue.Queue(20)
 
-
 #Note: Each buffer should always contain plain text
 sendBuffer = queue.Queue(20)
 receiveBuffer = queue.Queue(20)
