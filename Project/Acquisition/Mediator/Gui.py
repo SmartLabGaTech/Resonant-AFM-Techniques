@@ -37,15 +37,15 @@ class ConnectScreen(Screen):
 	sendPort = ObjectProperty(None)
 
 	def connect(self, sendPort, receivePort):
-		popup = Popup(content=Label(text='Connecting...'), auto_dismiss=False)
+		popup = Popup(title="Connecting", content=Label(text='Connecting...'), auto_dismiss=False)
 		popup.open()
 
 		if(ProtocolController.runProtocol(int(sendPort.text), int(receivePort.text))):
 			popup.dismiss()
-			return
 		else:
 			popup.dismiss()
-
+			#TODO: handle error messages
+		return
 class ParameterScreen(Screen):
 
 	chirpAmplitude = ObjectProperty(None)

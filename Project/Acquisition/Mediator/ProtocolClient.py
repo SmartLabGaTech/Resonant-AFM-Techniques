@@ -26,6 +26,5 @@ def sendTCPMessage(message, host, port):
 
 	sock.close()
 
-###### Private Functions ######
 
 
