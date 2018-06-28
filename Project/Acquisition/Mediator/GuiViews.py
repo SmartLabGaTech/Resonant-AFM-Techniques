@@ -37,6 +37,7 @@ _guiString = """
 	signalType: signalType
 	numberOfAcquisitions: numberOfAcquisitions
 	waveformSpecificationFile: waveformSpecificationFile
+	saveLocation: saveLocation
 
 	BoxLayout:
 		orientation: 'vertical'
@@ -92,18 +93,43 @@ _guiString = """
 				text: 'Waveform Specification File'
 			TextInput:
 				id: waveformSpecificationFile
+		BoxLayout:
+			Label:
+				text: 'Save Location'
+			TextInput:
+				id: saveLocation
 		Button:
 			text: 'Update Parameters'
 			on_press: root.updateParams()
 		Button:
 			text: 'Start Experiment'
-			on_press: root.startExperiment()
+			on_press: 
+				root.startExperiment()
+				root.manager.transition.direction = 'right'
+				root.manager.current = 'plotScreen'
 		Button:
 			text: 'Back To Connection'
 			on_press:
 				root.manager.transition.direction = 'right'
 				root.manager.current = 'connectScreen'
+<PlotScreen>:
+	
+	BoxLayout:
+		orientation: 'vertical'
+
+		PlotBox:
+			id: plot
+			orientation: 'vertical'
+		
+		BoxLayout:
+			orientation: 'vertical'
+			Button
+				text: 'Back to Parameters'
+				on_press:
+					root.manager.transition.direction = 'left'
+					root.manager.current = 'parameterScreen'
 """
+
 
 def getGuiString():
 	return _guiString

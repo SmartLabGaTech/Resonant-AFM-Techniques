@@ -21,8 +21,8 @@ timeout = 1
 sendPortNumber = None
 receivePortNumber = None
 
-keepListening = False
-keepSending = False
+# keepListening = False
+# keepSending = False
 
 ###### Public Functions ######
 
@@ -136,19 +136,18 @@ def listenThreadFunction(listenSocket, listeningEvent, listenSocketLock):
 			connection, clientAddress = listenSocket.accept()
 			print("Connection from ", clientAddress)
 
-			while(True):
-				data = connection.recv(1024)
+			data = connection.recv(1024)
 
-				if(data):
+			if(data):
 
-					# Decode the message
-					decodedMessage = data.decode("utf_8")
-					print(decodedMessage)
-					# Buffer the message
-					# Currently if the buffer is full an exception is raised.
-					# TODO: handle dropped messages
-					# TODO: handle exception
-					receiveBuffer.put(decodedMessage, False)
+				# Decode the message
+				decodedMessage = data.decode("utf_8")
+				print(decodedMessage)
+				# Buffer the message
+				# Currently if the buffer is full an exception is raised.
+				# TODO: handle dropped messages
+				# TODO: handle exception
+				receiveBuffer.put(decodedMessage, False)
 		except socket.timeout:
 			pass
 	#The thread is done with the socket
