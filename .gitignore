@@ -1,2 +1,8 @@
+#Node
+package-lock.json
 
+#Dependency Directories
+node_modules/
 *.pyc
+
+.DS_Store
