@@ -7,5 +7,3 @@ NI-6124 and the response will be acquired with the same card. Please refer to th
 The folder __Excite__ contains the Labview code and an executable which launches the Labview portion of Excite.
 
 The bin folder contains all of the Python 3 code. 
-
-Website: https://smartlabgatech.github.io/Resonant-AFM-Techniques/
