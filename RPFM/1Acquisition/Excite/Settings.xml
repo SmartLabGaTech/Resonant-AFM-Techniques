@@ -1,0 +1,96 @@
+<?xml version='1.0' standalone='yes' ?>
+<LVData xmlns="http://www.ni.com/LVData">
+<Version>17.0f2</Version>
+<Cluster>
+<Name>User Specified</Name>
+<NumElts>7</NumElts>
+<Cluster>
+<Name>Hardware Configuration</Name>
+<NumElts>4</NumElts>
+<DAQChannel>
+<Name>Signal Channel</Name>
+<Val>PXI1Slot7/ao0</Val>
+</DAQChannel>
+<DAQChannel>
+<Name>Response Channel</Name>
+<Val>PXI1Slot7/ai0</Val>
+</DAQChannel>
+<DAQChannel>
+<Name>Trigger Channel</Name>
+<Val>/PXI1Slot7/PFI12</Val>
+</DAQChannel>
+<DBL>
+<Name>Number of Acquisitions</Name>
+<Val>256.00000000000000</Val>
+</DBL>
+</Cluster>
+<Cluster>
+<Name>Analysis Configuration</Name>
+<NumElts>1</NumElts>
+<Boolean>
+<Name>Statistics</Name>
+<Val>1</Val>
+</Boolean>
+</Cluster>
+<EW>
+<Name>Signal Type</Name>
+<Choice>From Excel</Choice>
+<Choice>Single Chirp</Choice>
+<Val>0</Val>
+</EW>
+<EW>
+<Name>New Data Behavior</Name>
+<Choice>Replace</Choice>
+<Choice>Overlay</Choice>
+<Choice>Append</Choice>
+<Val>2</Val>
+</EW>
+<Cluster>
+<Name>Signal Configuration</Name>
+<NumElts>7</NumElts>
+<DBL>
+<Name>Chirp Amplitude</Name>
+<Val>0.10000000000000</Val>
+</DBL>
+<DBL>
+<Name>I/O Limit</Name>
+<Val>3.00000000000000</Val>
+</DBL>
+<DBL>
+<Name>Sample Rate</Name>
+<Val>2000000.00000000000000</Val>
+</DBL>
+<DBL>
+<Name>Chirp Duration (s)</Name>
+<Val>5.00000000000000E-3</Val>
+</DBL>
+<DBL>
+<Name>Upper Frequency</Name>
+<Val>399999.99999999999900</Val>
+</DBL>
+<DBL>
+<Name>Lower Frequency</Name>
+<Val>349999.99999999999900</Val>
+</DBL>
+<EW>
+<Name>Windowing</Name>
+<Choice>None</Choice>
+<Choice>Exponential</Choice>
+<Choice>Flat top</Choice>
+<Choice>Hamming</Choice>
+<Choice>Hanning</Choice>
+<Choice>Kaiser-Bessel</Choice>
+<Choice>Rectangular</Choice>
+<Val>1</Val>
+</EW>
+</Cluster>
+<String>
+<Name>Waveform File</Name>
+<Val>D:\Dropbox (GaTech)\Dropbox (GaTech)\ME-DboxMgmt-Bassiri-Gharb\BE_Active\Kerisha\003_10PT\03-10-2020\A2\Measurement\03_V\BEline256.csv</Val>
+</String>
+<String>
+<Name>Save Location</Name>
+<Val>D:\Dropbox (GaTech)\Dropbox (GaTech)\ME-DboxMgmt-Bassiri-Gharb\BE_Active\Kerisha\003_10PT\03-10-2020\A2\Measurement\03_V\</Val>
+</String>
+</Cluster>
+</LVData>
