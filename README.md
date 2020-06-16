@@ -1,5 +1,7 @@
 # Resonant Piezoresponse Force Microscopy
 
+[![DOI](https://zenodo.org/badge/116877136.svg)](https://zenodo.org/badge/latestdoi/116877136)
+
 A tool developed by the Smart Materials Advanced Research and Technology (SMART) lab at the Georgia Institute of Technology. This tool expands the functionality of any Atomic Force Microscope (AFM) to allow for wide bandwidth characterization of electromechanically active materials.
 
 There are three folders:
